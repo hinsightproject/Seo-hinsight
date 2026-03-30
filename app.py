@@ -859,7 +859,6 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         }
         for k, v in replacements.items():
             text = text.replace(k, v)
-        # Nettoyage final : supprime tout caractère non latin-1
         result = ""
         for ch in text:
             try:
@@ -1002,11 +1001,11 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
     col_w = 36
     for val, lbl in kpis:
         pdf.set_font("Helvetica","B",14); pdf.set_text_color(*WHITE)
-        pdf.cell(col_w,7,safe(val),align="C")
+        pdf.cell(col_w,7,val,align="C")
         pdf.set_x(pdf.get_x()-col_w)
         pdf.set_y(pdf.get_y()+7)
         pdf.set_font("Helvetica","",7); pdf.set_text_color(140,160,220)
-        pdf.cell(col_w,4,safe(lbl),align="C")
+        pdf.cell(col_w,4,lbl,align="C")
         pdf.set_y(pdf.get_y()-7)
         pdf.set_x(pdf.get_x()+col_w)
 
@@ -1033,12 +1032,12 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         # Numéro
         pdf.set_fill_color(*ORANGE); pdf.rect(16, y, 10, 8, 'F')
         pdf.set_xy(16, y); pdf.set_font("Helvetica","B",8); pdf.set_text_color(*WHITE)
-        pdf.cell(10,8,safe(num),align="C")
+        pdf.cell(10,8,num,align="C")
         # Titre
         pdf.set_xy(29, y); pdf.set_font("Helvetica","B",9); pdf.set_text_color(*NAVY)
-        pdf.cell(0,4,safe(titre),new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0,4,titre,new_x="LMARGIN", new_y="NEXT")
         pdf.set_x(29); pdf.set_font("Helvetica","",8); pdf.set_text_color(*GRAY)
-        pdf.cell(0,4,safe(desc),new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0,4,desc,new_x="LMARGIN", new_y="NEXT")
         pdf.ln(3)
 
     # ── Bloc pub Hinsight bas de couverture
@@ -1127,19 +1126,14 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         border_col, bg_col, prio_label = prio_colors.get(prio, (BLUE, LIGHT, "INFO"))
         y0 = pdf.get_y()
         card_h = 20
-        # Fond coloré léger
         pdf.set_fill_color(*bg_col); pdf.rect(10, y0, 190, card_h, 'F')
-        # Trait coloré gauche
         pdf.set_fill_color(*border_col); pdf.rect(10, y0, 3, card_h, 'F')
-        # Badge priorité (texte propre sans emoji)
         pdf.set_xy(15, y0+2)
         pdf.set_font("Helvetica","B",7); pdf.set_text_color(*border_col)
         pdf.cell(35,4,prio_label)
-        # Titre
         pdf.set_xy(15, y0+7)
         pdf.set_font("Helvetica","B",8.5); pdf.set_text_color(*NAVY)
         pdf.cell(185,4,safe(s.get("t","")[:90]))
-        # Action
         pdf.set_xy(15, y0+13)
         pdf.set_font("Helvetica","",7.5); pdf.set_text_color(*GRAY)
         pdf.cell(185,4,safe(f"-> {s.get('a','')[:100]}"))
@@ -1192,13 +1186,13 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
             bg = (240,253,244) if present else (255,241,242)
             pdf.set_fill_color(*bg)
             pdf.set_text_color(*NAVY); pdf.set_font("Helvetica","",8)
-            pdf.cell(100,5.5,safe(name),fill=True)
+            pdf.cell(100,5.5,name,fill=True)
             status_txt = "OK" if present else "ABSENT"
             s_col = GREEN if present else RED
             pdf.set_text_color(*s_col); pdf.set_font("Helvetica","B",8)
-            pdf.cell(30,5.5,safe(status_txt),fill=True,align="C")
+            pdf.cell(30,5.5,status_txt,fill=True,align="C")
             pdf.set_text_color(*GRAY); pdf.set_font("Helvetica","",7)
-            pdf.cell(0,5.5,safe(impacts.get(name,"")),fill=True)
+            pdf.cell(0,5.5,impacts.get(name,""),fill=True)
             pdf.ln()
         pdf.ln(4)
 
@@ -1246,7 +1240,7 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
     # En-tête tableau
     pdf.set_fill_color(*NAVY); pdf.set_text_color(*WHITE); pdf.set_font("Helvetica","B",8)
     for col_name, col_w in [("URL",95),("Statut",15),("Score",15),("Problèmes principaux",65)]:
-        pdf.cell(col_w,6,safe(col_name),fill=True,align="C")
+        pdf.cell(col_w,6,col_name,fill=True,align="C")
     pdf.ln()
 
     pdf.set_font("Helvetica","",7.5)
@@ -1257,11 +1251,11 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         sc_c2 = GREEN if sc_p>=70 else (YELLOW if sc_p>=40 else RED)
         pdf.set_text_color(*NAVY)
         url_short = safe(row["url"].replace("https://","").replace("http://","")[:55])
-        pdf.cell(95,5,safe(url_short),fill=True)
+        pdf.cell(95,5,url_short,fill=True)
         status = row.get("status",0)
         s_col = GREEN if status==200 else RED
-        pdf.set_text_color(*s_col); pdf.cell(15,5,safe(str(status)),fill=True,align="C")
-        pdf.set_text_color(*sc_c2); pdf.cell(15,5,safe(str(sc_p)),fill=True,align="C")
+        pdf.set_text_color(*s_col); pdf.cell(15,5,str(status),fill=True,align="C")
+        pdf.set_text_color(*sc_c2); pdf.cell(15,5,str(sc_p),fill=True,align="C")
         issues = row.get("issues","")
         issues_str = " - ".join(issues[:3]) if isinstance(issues,list) else str(issues)[:45]
         pdf.set_text_color(*GRAY); pdf.cell(65,5,safe(issues_str[:45]),fill=True)
@@ -1316,7 +1310,7 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         by = 110
         pdf.set_fill_color(*col); pdf.rect(bx, by, bw, 1.5, 'F')
         pdf.set_xy(bx, by+5); pdf.set_font("Helvetica","B",9); pdf.set_text_color(*col)
-        pdf.cell(bw,5,safe(title),new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(bw,5,title,new_x="LMARGIN", new_y="NEXT")
         pdf.set_x(bx); pdf.set_font("Helvetica","",7.5); pdf.set_text_color(200,210,240)
         pdf.multi_cell(bw-2, 4.5, desc)
         bx += bw + 4
@@ -2272,33 +2266,15 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
         with t_robots:
             st.markdown("#### 🤖 Robots.txt")
             if robots_data:
-                found_rb = robots_data.get("found", False)
-                rb_color = "#059669" if found_rb else "#ef4444"
-                rb_found_val = "✅ Oui" if found_rb else "❌ Non"
-                st.markdown(f"""
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1rem">
-                  <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid {rb_color}">
-                    <div style="font-size:1.5rem;font-weight:700;color:#111827">{rb_found_val}</div>
-                    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Trouvé</div>
-                  </div>
-                  <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #fc6f06">
-                    <div style="font-size:1.5rem;font-weight:700;color:#111827">{robots_data.get("disallow_count", 0)}</div>
-                    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Règles Disallow</div>
-                  </div>
-                  <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #00cec8">
-                    <div style="font-size:1.5rem;font-weight:700;color:#111827">{robots_data.get("allow_count", 0)}</div>
-                    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Règles Allow</div>
-                  </div>
-                  <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #0c85be">
-                    <div style="font-size:1.5rem;font-weight:700;color:#111827">{len(robots_data.get("sitemap_refs", []))}</div>
-                    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Sitemaps référencés</div>
-                  </div>
-                </div>
-                """, unsafe_allow_html=True)
+                rb1, rb2, rb3, rb4 = st.columns(4)
+                rb1.metric("Trouvé", "✅ Oui" if robots_data.get("found") else "❌ Non")
+                rb2.metric("Règles Disallow", robots_data.get("disallow_count", 0))
+                rb3.metric("Règles Allow", robots_data.get("allow_count", 0))
+                rb4.metric("Sitemaps référencés", len(robots_data.get("sitemap_refs", [])))
 
                 if robots_data.get("issues"):
                     for issue in robots_data["issues"]:
-                        st.markdown(f"""<div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:.7rem 1rem;margin-bottom:.5rem;color:#92400e;font-size:.85rem">⚠️ {issue}</div>""", unsafe_allow_html=True)
+                        st.warning(f"⚠️ {issue}")
 
                 if robots_data.get("disallowed_paths"):
                     st.markdown("**Chemins bloqués :**")
@@ -2306,42 +2282,27 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
                         use_container_width=True, height=200)
 
                 if robots_data.get("user_agents"):
-                    st.markdown(f"""<div style="background:white;border-radius:8px;padding:.7rem 1rem;margin-bottom:.5rem;color:#111827;font-size:.85rem;box-shadow:0 1px 4px rgba(9,16,69,.06)"><b>User-agents détectés :</b> {', '.join(robots_data['user_agents'])}</div>""", unsafe_allow_html=True)
+                    st.markdown(f"**User-agents détectés :** {', '.join(robots_data['user_agents'])}")
 
                 with st.expander("📄 Contenu brut robots.txt"):
                     st.code(robots_data.get("raw","(vide)"), language="text")
             else:
-                st.markdown("""<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.8rem 1rem;color:#1e40af;font-size:.85rem">ℹ️ Relance un audit pour analyser robots.txt</div>""", unsafe_allow_html=True)
+                st.info("Relance un audit pour analyser robots.txt")
 
             st.markdown("---")
             st.markdown("#### 🗺️ Sitemap.xml")
             if sitemap_data:
-                found_sm = sitemap_data.get("found", False)
-                sm_color = "#059669" if found_sm else "#ef4444"
-                sm_found_val = "✅ Oui" if found_sm else "❌ Non"
-                sm_type = "Sitemap Index" if sitemap_data.get("is_index") else "Sitemap simple"
-                st.markdown(f"""
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem">
-                  <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid {sm_color}">
-                    <div style="font-size:1.5rem;font-weight:700;color:#111827">{sm_found_val}</div>
-                    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Trouvé</div>
-                  </div>
-                  <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #0c85be">
-                    <div style="font-size:1.5rem;font-weight:700;color:#111827">{sitemap_data.get("url_count", 0)}</div>
-                    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">URLs dans le sitemap</div>
-                  </div>
-                  <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #00cec8">
-                    <div style="font-size:1.5rem;font-weight:700;color:#111827">{sm_type}</div>
-                    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Type</div>
-                  </div>
-                </div>
-                """, unsafe_allow_html=True)
+                sm1, sm2, sm3 = st.columns(3)
+                sm1.metric("Trouvé", "✅ Oui" if sitemap_data.get("found") else "❌ Non")
+                sm2.metric("URLs dans le sitemap", sitemap_data.get("url_count", 0))
+                sm3.metric("Type", "Sitemap Index" if sitemap_data.get("is_index") else "Sitemap simple")
 
                 if sitemap_data.get("issues"):
                     for issue in sitemap_data["issues"]:
-                        st.markdown(f"""<div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:.7rem 1rem;margin-bottom:.5rem;color:#92400e;font-size:.85rem">⚠️ {issue}</div>""", unsafe_allow_html=True)
+                        st.warning(f"⚠️ {issue}")
 
                 if sitemap_data.get("found"):
+                    # Comparaison sitemap vs crawl
                     crawled_urls = set(df["url"].tolist())
                     sitemap_urls = set(sitemap_data.get("urls_sample", []))
                     not_crawled = sitemap_urls - crawled_urls
@@ -2359,7 +2320,7 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
                     st.dataframe(pd.DataFrame(sitemap_data["urls_sample"], columns=["URL"]),
                         use_container_width=True)
             else:
-                st.markdown("""<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.8rem 1rem;color:#1e40af;font-size:.85rem">ℹ️ Relance un audit pour analyser sitemap.xml</div>""", unsafe_allow_html=True)
+                st.info("Relance un audit pour analyser sitemap.xml")
 
         # ── MOTS-CLÉS ─────────────────────────────────────────────
         with t_kw:
