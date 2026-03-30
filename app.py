@@ -158,6 +158,18 @@ section[data-testid="stSidebar"] hr{
     margin:.4rem 0 !important;
     border-color:#e5e7eb !important;
 }
+
+/* ── FORCER LISIBILITÉ COMPOSANTS NATIFS STREAMLIT ── */
+[data-testid="stMetricValue"]{color:#111827 !important;font-weight:700 !important}
+[data-testid="stMetricLabel"]{color:#6b7280 !important}
+[data-testid="stMetricDelta"]{color:#374151 !important}
+div[data-testid="stAlert"] p{color:#111827 !important}
+div[data-testid="stAlert"][kind="warning"] p{color:#92400e !important}
+div[data-testid="stAlert"][kind="info"] p{color:#1e40af !important}
+div[data-testid="stAlert"][kind="success"] p{color:#065f46 !important}
+div[data-testid="stAlert"][kind="error"] p{color:#991b1b !important}
+.stAlert p{color:#111827 !important}
+[data-baseweb="notification"] span{color:#111827 !important}
 </style>""", unsafe_allow_html=True)
 
 HEADERS = {"User-Agent":"Mozilla/5.0 (compatible; HinsightAuditBot/3.0; +https://hinsight.fr)","Accept-Language":"fr-FR,fr;q=0.9"}
@@ -2540,7 +2552,7 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
                 st.info("Aucune page HTML analysée.")
             else:
                 kw_url = st.selectbox("Choisir une page à analyser",
-                    df_html_kw["url"].tolist(), key="kw_url_select")
+                    df_html_kw["url"].tolist(), key="kw_url_select2")
                 row_kw = df_html_kw[df_html_kw["url"]==kw_url].iloc[0]
                 kw_data = analyze_page_keywords(
                     row_kw.to_dict(),
