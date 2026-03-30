@@ -989,25 +989,25 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
     fw = 60*min(score,100)//100
     pdf.set_fill_color(*sc_col); pdf.rect(140,72,fw,4,'F')
 
-    # ── KPIs résumé couverture (ligne de chiffres clés)
-    pdf.set_xy(16,96)
+    # ── KPIs résumé couverture (positionnement absolu)
     kpis = [
-        (str(total), "URLs crawlées"),
+        (str(total), "URLs crawlees"),
         (str(errors), "Erreurs"),
-        (f"{int(df['load_time_ms'].mean())} ms", "Tps moyen"),
+        (safe(f"{int(df['load_time_ms'].mean())} ms"), "Tps moyen"),
         (str(len(dups)), "Doublons"),
-        (str(len(sugs)), "Préconisations"),
+        (str(len(sugs)), "Preconisations"),
     ]
     col_w = 36
-    for val, lbl in kpis:
+    x_start = 16
+    y_kpi = 96
+    for idx, (val, lbl) in enumerate(kpis):
+        x = x_start + idx * col_w
+        pdf.set_xy(x, y_kpi)
         pdf.set_font("Helvetica","B",14); pdf.set_text_color(*WHITE)
-        pdf.cell(col_w,7,val,align="C")
-        pdf.set_x(pdf.get_x()-col_w)
-        pdf.set_y(pdf.get_y()+7)
+        pdf.cell(col_w, 7, safe(val), align="C")
+        pdf.set_xy(x, y_kpi + 7)
         pdf.set_font("Helvetica","",7); pdf.set_text_color(140,160,220)
-        pdf.cell(col_w,4,lbl,align="C")
-        pdf.set_y(pdf.get_y()-7)
-        pdf.set_x(pdf.get_x()+col_w)
+        pdf.cell(col_w, 4, safe(lbl), align="C")
 
     # ── Zone blanche bas de couverture
     pdf.set_fill_color(244,246,251); pdf.rect(0,120,210,177,'F')
