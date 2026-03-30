@@ -171,11 +171,11 @@ div[data-testid="stAlert"][kind="error"] p{color:#991b1b !important}
 .stAlert p{color:#111827 !important}
 [data-baseweb="notification"] span{color:#111827 !important}
 
-/* ── FORCER LISIBILITÉ TITRES ET TEXTES ── */
-.block-container .stMarkdown h1,.block-container .stMarkdown h2,.block-container .stMarkdown h3,
-.block-container .stMarkdown h4,.block-container .stMarkdown h5,.block-container .stMarkdown h6{color:#091045 !important}
+/* ── FORCER LISIBILITÉ TEXTES DANS LES ONGLETS ── */
 .stTabs .stMarkdown p{color:#111827 !important}
 [data-testid="stVerticalBlock"] .stMarkdown p{color:#111827 !important}
+.stTabs .stMarkdown h1,.stTabs .stMarkdown h2,.stTabs .stMarkdown h3,
+.stTabs .stMarkdown h4,.stTabs .stMarkdown h5,.stTabs .stMarkdown h6{color:#091045 !important}
 
 /* ── BLOCS INFO / BLOCKQUOTE ── */
 [data-testid="stCaptionContainer"] p{color:#6b7280 !important}
@@ -1649,7 +1649,7 @@ for k,v in [("crawl_done",False),("results",[]),("ps",{}),("ps_desktop",{}),("op
 # ── HEADER
 st.markdown("""<div class="app-header">
   <div>
-    <h1>🔍 Audit SEO - Hinsight</h1>
+    <h1 style="color:white !important;margin:0;font-size:1.5rem;font-weight:700">🔍 Audit SEO - Hinsight</h1>
     <p style="color:#c8d0e8 !important;margin:5px 0 0;font-size:.82rem">Crawler SEO - On-page - Vitesse - Fichiers - Liens sortants - Open Graph - Schema.org - Backlinks</p>
   </div>
 </div>""",unsafe_allow_html=True)
