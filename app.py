@@ -181,26 +181,30 @@ h1,h2,h3,h4,h5,h6{color:#091045 !important}
 p{color:#111827 !important}
 label{color:#374151 !important}
 
+/* ── BLOCS INFO / BLOCKQUOTE ── */
+[data-testid="stCaptionContainer"] p{color:#6b7280 !important}
+div[data-testid="stMarkdownContainer"] blockquote{border-left:3px solid #0c85be !important;background:#dbeafe !important;padding:.5rem 1rem !important;border-radius:4px !important}
+div[data-testid="stMarkdownContainer"] blockquote p{color:#1e3a5f !important;font-weight:500 !important}
+div[data-testid="stMarkdownContainer"] blockquote *{color:#1e3a5f !important}
+
 /* ── BOUTONS DOWNLOAD ── */
 .stDownloadButton button{
     background:linear-gradient(135deg,#091045,#212c6c) !important;
     color:white !important;
-    font-weight:600 !important;
+    font-weight:700 !important;
     border:none !important;
     border-radius:8px !important;
-    font-size:.88rem !important;
-    padding:.6rem 1rem !important;
+    font-size:.92rem !important;
+    padding:.7rem 1rem !important;
     border-bottom:3px solid #fc6f06 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    letter-spacing:.02em !important;
 }
 .stDownloadButton button:hover{
     background:linear-gradient(135deg,#212c6c,#091045) !important;
     border-bottom-color:#f8ba07 !important;
+    color:white !important;
 }
-
-/* ── BLOCS INFO / BLOCKQUOTE ── */
-[data-testid="stCaptionContainer"] p{color:#6b7280 !important}
-div[data-testid="stMarkdownContainer"] blockquote p{color:#374151 !important}
-div[data-testid="stMarkdownContainer"] blockquote{border-left:3px solid #0c85be;background:#f0f9ff;padding:.5rem 1rem;border-radius:4px}
 </style>""", unsafe_allow_html=True)
 
 HEADERS = {"User-Agent":"Mozilla/5.0 (compatible; HinsightAuditBot/3.0; +https://hinsight.fr)","Accept-Language":"fr-FR,fr;q=0.9"}
