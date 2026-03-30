@@ -1650,7 +1650,7 @@ for k,v in [("crawl_done",False),("results",[]),("ps",{}),("ps_desktop",{}),("op
 st.markdown("""<div class="app-header">
   <div>
     <h1 style="color:white !important;margin:0;font-size:1.5rem;font-weight:700">🔍 Audit SEO - Hinsight</h1>
-    <p style="color:#c8d0e8 !important;margin:5px 0 0;font-size:.82rem">Crawler SEO - On-page - Vitesse - Fichiers - Liens sortants - Open Graph - Schema.org - Backlinks</p>
+    <div style="color:#c8d0e8;margin:5px 0 0;font-size:.82rem">Crawler SEO - On-page - Vitesse - Fichiers - Liens sortants - Open Graph - Schema.org - Backlinks</div>
   </div>
 </div>""",unsafe_allow_html=True)
 
