@@ -172,14 +172,10 @@ div[data-testid="stAlert"][kind="error"] p{color:#991b1b !important}
 [data-baseweb="notification"] span{color:#111827 !important}
 
 /* ── FORCER LISIBILITÉ TITRES ET TEXTES ── */
-.stMarkdown h1,.stMarkdown h2,.stMarkdown h3,.stMarkdown h4,.stMarkdown h5,.stMarkdown h6{color:#091045 !important}
-.block-container .stMarkdown p{color:#111827 !important}
-.stMarkdown li{color:#111827 !important}
-.stCaption p{color:#6b7280 !important}
-[data-testid="stText"]{color:#111827 !important}
-/* Préserver le texte blanc du header */
-.app-header h1{color:white !important}
-.app-header p{color:#c8d0e8 !important}
+.block-container .stMarkdown h1,.block-container .stMarkdown h2,.block-container .stMarkdown h3,
+.block-container .stMarkdown h4,.block-container .stMarkdown h5,.block-container .stMarkdown h6{color:#091045 !important}
+.stTabs .stMarkdown p{color:#111827 !important}
+[data-testid="stVerticalBlock"] .stMarkdown p{color:#111827 !important}
 
 /* ── BLOCS INFO / BLOCKQUOTE ── */
 [data-testid="stCaptionContainer"] p{color:#6b7280 !important}
