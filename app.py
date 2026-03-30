@@ -170,6 +170,18 @@ div[data-testid="stAlert"][kind="success"] p{color:#065f46 !important}
 div[data-testid="stAlert"][kind="error"] p{color:#991b1b !important}
 .stAlert p{color:#111827 !important}
 [data-baseweb="notification"] span{color:#111827 !important}
+
+/* ── FORCER LISIBILITÉ TITRES ET TEXTES MARKDOWN ── */
+.stMarkdown h1,.stMarkdown h2,.stMarkdown h3,.stMarkdown h4,.stMarkdown h5,.stMarkdown h6{color:#091045 !important}
+.stMarkdown p{color:#111827 !important}
+.stMarkdown li{color:#111827 !important}
+.stCaption p{color:#6b7280 !important}
+[data-testid="stText"]{color:#111827 !important}
+h1,h2,h3,h4,h5,h6{color:#091045 !important}
+p{color:#111827 !important}
+label{color:#374151 !important}
+.stSelectbox label{color:#374151 !important}
+.stSlider label{color:#374151 !important}
 </style>""", unsafe_allow_html=True)
 
 HEADERS = {"User-Agent":"Mozilla/5.0 (compatible; HinsightAuditBot/3.0; +https://hinsight.fr)","Accept-Language":"fr-FR,fr;q=0.9"}
