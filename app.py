@@ -171,17 +171,26 @@ div[data-testid="stAlert"][kind="error"] p{color:#991b1b !important}
 .stAlert p{color:#111827 !important}
 [data-baseweb="notification"] span{color:#111827 !important}
 
-/* ── FORCER LISIBILITÉ TITRES ET TEXTES MARKDOWN ── */
-.stMarkdown h1,.stMarkdown h2,.stMarkdown h3,.stMarkdown h4,.stMarkdown h5,.stMarkdown h6{color:#091045 !important}
-.stMarkdown p{color:#111827 !important}
-.stMarkdown li{color:#111827 !important}
-.stCaption p{color:#6b7280 !important}
-[data-testid="stText"]{color:#111827 !important}
-h1,h2,h3,h4,h5,h6{color:#091045 !important}
-p{color:#111827 !important}
-label{color:#374151 !important}
-.stSelectbox label{color:#374151 !important}
-.stSlider label{color:#374151 !important}
+/* ── BOUTONS DOWNLOAD ── */
+.stDownloadButton button{
+    background:linear-gradient(135deg,#091045,#212c6c) !important;
+    color:white !important;
+    font-weight:600 !important;
+    border:none !important;
+    border-radius:8px !important;
+    font-size:.88rem !important;
+    padding:.6rem 1rem !important;
+    border-bottom:3px solid #fc6f06 !important;
+}
+.stDownloadButton button:hover{
+    background:linear-gradient(135deg,#212c6c,#091045) !important;
+    border-bottom-color:#f8ba07 !important;
+}
+
+/* ── BLOCS INFO / BLOCKQUOTE ── */
+[data-testid="stCaptionContainer"] p{color:#6b7280 !important}
+div[data-testid="stMarkdownContainer"] blockquote p{color:#374151 !important}
+div[data-testid="stMarkdownContainer"] blockquote{border-left:3px solid #0c85be;background:#f0f9ff;padding:.5rem 1rem;border-radius:4px}
 </style>""", unsafe_allow_html=True)
 
 HEADERS = {"User-Agent":"Mozilla/5.0 (compatible; HinsightAuditBot/3.0; +https://hinsight.fr)","Accept-Language":"fr-FR,fr;q=0.9"}
@@ -2381,55 +2390,6 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
                 st.info("Aucune page HTML disponible.")
 
         # ── CORE WEB VITALS ───────────────────────────────────────
-        with t_cwv:
-            st.markdown("#### ⚡ Core Web Vitals - Mobile vs Desktop")
-            if not ps_result and not ps_desktop:
-                st.warning("⚠️ Renseigne ta clé API PageSpeed Google dans la sidebar pour activer cette analyse.")
-                st.markdown("""<div style='background:#f0f9ff;border-radius:8px;padding:1rem;border-left:4px solid #0c85be;margin-top:.5rem'>
-                    <b>Comment obtenir la clé ?</b><br>
-                    1. Va sur <a href='https://console.cloud.google.com' target='_blank'>console.cloud.google.com</a><br>
-                    2. Active l'API <b>PageSpeed Insights</b><br>
-                    3. Crée une clé API → copie-la dans la sidebar<br>
-                    <i style='color:#6b7280'>Gratuit - 25 000 req/jour</i>
-                </div>""", unsafe_allow_html=True)
-            else:
-                # Tableau comparatif Mobile vs Desktop
-                metrics = ["score","lcp","cls","tbt"]
-                labels  = {"score":"Score Performance","lcp":"LCP (Largest Contentful Paint)",
-                           "cls":"CLS (Cumulative Layout Shift)","tbt":"TBT (Total Blocking Time)"}
-                seuils  = {"score":(90,50),"lcp":("2.5s","4s"),"cls":("0.1","0.25")}
-
-                cwv1, cwv2 = st.columns(2)
-                for col, label, data, icon in [(cwv1,"📱 Mobile",ps_result,"mobile"),(cwv2,"🖥 Desktop",ps_desktop,"desktop")]:
-                    with col:
-                        st.markdown(f"**{label}**")
-                        if data and "score" in data:
-                            sc = data["score"]
-                            sc_col = "#059669" if sc>=90 else ("#f8ba07" if sc>=50 else "#ef4444")
-                            st.markdown(f"""<div style='background:white;border-radius:10px;padding:1rem;
-                                box-shadow:0 1px 5px rgba(9,16,69,.07);text-align:center;margin-bottom:.8rem'>
-                                <div style='font-size:3rem;font-weight:800;color:{sc_col}'>{sc}</div>
-                                <div style='font-size:.8rem;color:#6b7280'>Score Performance /100</div>
-                                <div style='height:6px;background:#e5e7eb;border-radius:6px;margin-top:8px'>
-                                <div style='height:100%;width:{sc}%;background:{sc_col};border-radius:6px'></div></div>
-                            </div>""", unsafe_allow_html=True)
-                            for m, lbl in [("lcp","LCP"),("cls","CLS"),("tbt","TBT")]:
-                                val = data.get(m,"N/A")
-                                st.metric(lbl, val)
-                        else:
-                            st.info(f"Pas de données {label.split()[1]}")
-
-                # Explication des métriques
-                with st.expander("ℹ️ Comprendre les Core Web Vitals"):
-                    st.markdown("""
-| Métrique | Bon | À améliorer | Mauvais | Description |
-|---|---|---|---|---|
-| **LCP** | < 2.5s | 2.5–4s | > 4s | Temps d'affichage du plus grand élément visible |
-| **CLS** | < 0.1 | 0.1–0.25 | > 0.25 | Stabilité visuelle - décalages de mise en page |
-| **TBT** | < 200ms | 200–600ms | > 600ms | Temps total de blocage du thread principal |
-| **Score** | > 90 | 50–90 | < 50 | Score synthétique Lighthouse |
-                    """)
-
     with t_hist:
         st.markdown("#### Historique des audits - comparaison avant/après")
         history = st.session_state["history"]
