@@ -1002,11 +1002,11 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
     col_w = 36
     for val, lbl in kpis:
         pdf.set_font("Helvetica","B",14); pdf.set_text_color(*WHITE)
-        pdf.cell(col_w,7,val,align="C")
+                pdf.cell(col_w,7,safe(val),align="C")
         pdf.set_x(pdf.get_x()-col_w)
         pdf.set_y(pdf.get_y()+7)
         pdf.set_font("Helvetica","",7); pdf.set_text_color(140,160,220)
-        pdf.cell(col_w,4,lbl,align="C")
+                pdf.cell(col_w,4,safe(lbl),align="C")
         pdf.set_y(pdf.get_y()-7)
         pdf.set_x(pdf.get_x()+col_w)
 
@@ -1033,12 +1033,12 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         # Numéro
         pdf.set_fill_color(*ORANGE); pdf.rect(16, y, 10, 8, 'F')
         pdf.set_xy(16, y); pdf.set_font("Helvetica","B",8); pdf.set_text_color(*WHITE)
-        pdf.cell(10,8,num,align="C")
+        pdf.cell(10,8,safe(num),align="C")
         # Titre
         pdf.set_xy(29, y); pdf.set_font("Helvetica","B",9); pdf.set_text_color(*NAVY)
-        pdf.cell(0,4,titre,new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0,4,safe(titre),new_x="LMARGIN", new_y="NEXT")
         pdf.set_x(29); pdf.set_font("Helvetica","",8); pdf.set_text_color(*GRAY)
-        pdf.cell(0,4,desc,new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0,4,safe(desc),new_x="LMARGIN", new_y="NEXT")
         pdf.ln(3)
 
     # ── Bloc pub Hinsight bas de couverture
@@ -1195,13 +1195,13 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
             bg = (240,253,244) if present else (255,241,242)
             pdf.set_fill_color(*bg)
             pdf.set_text_color(*NAVY); pdf.set_font("Helvetica","",8)
-            pdf.cell(100,5.5,name,fill=True)
+            pdf.cell(100,5.5,safe(name),fill=True)
             status_txt = "OK" if present else "ABSENT"
             s_col = GREEN if present else RED
             pdf.set_text_color(*s_col); pdf.set_font("Helvetica","B",8)
-            pdf.cell(30,5.5,status_txt,fill=True,align="C")
+            pdf.cell(30,5.5,safe(status_txt),fill=True,align="C")
             pdf.set_text_color(*GRAY); pdf.set_font("Helvetica","",7)
-            pdf.cell(0,5.5,impacts.get(name,""),fill=True)
+            pdf.cell(0,5.5,safe(impacts.get(name,"")),fill=True)
             pdf.ln()
         pdf.ln(4)
 
@@ -1230,9 +1230,9 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
                 pdf.rect(10,y0,190,13,'F')
                 pdf.set_fill_color(*bc); pdf.rect(10,y0,2.5,13,'F')
                 pdf.set_xy(14,y0+1); pdf.set_font("Helvetica","B",8); pdf.set_text_color(*bc)
-                pdf.cell(50,4,p)
+                pdf.cell(50,4,safe(p))
                 pdf.set_xy(14,y0+5); pdf.set_font("Helvetica","B",8); pdf.set_text_color(*NAVY)
-                pdf.cell(186,4,rec.get("t","")[:80])
+                pdf.cell(186,4,safe(rec.get("t","")[:80]))
                 pdf.set_xy(14,y0+9); pdf.set_font("Helvetica","",7); pdf.set_text_color(*GRAY)
                 pdf.cell(186,4,safe(f"-> {rec.get('a','')[:100]}"))
                 pdf.set_y(y0+15)
@@ -1248,7 +1248,7 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
     # En-tête tableau
     pdf.set_fill_color(*NAVY); pdf.set_text_color(*WHITE); pdf.set_font("Helvetica","B",8)
     for col_name, col_w in [("URL",95),("Statut",15),("Score",15),("Problèmes principaux",65)]:
-        pdf.cell(col_w,6,col_name,fill=True,align="C")
+        pdf.cell(col_w,6,safe(col_name),fill=True,align="C")
     pdf.ln()
 
     pdf.set_font("Helvetica","",7.5)
@@ -1259,11 +1259,11 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         sc_c2 = GREEN if sc_p>=70 else (YELLOW if sc_p>=40 else RED)
         pdf.set_text_color(*NAVY)
         url_short = safe(row["url"].replace("https://","").replace("http://","")[:55])
-        pdf.cell(95,5,url_short,fill=True)
+        pdf.cell(95,5,safe(url_short),fill=True)
         status = row.get("status",0)
         s_col = GREEN if status==200 else RED
-        pdf.set_text_color(*s_col); pdf.cell(15,5,str(status),fill=True,align="C")
-        pdf.set_text_color(*sc_c2); pdf.cell(15,5,str(sc_p),fill=True,align="C")
+        pdf.set_text_color(*s_col); pdf.cell(15,5,safe(str(status)),fill=True,align="C")
+        pdf.set_text_color(*sc_c2); pdf.cell(15,5,safe(str(sc_p)),fill=True,align="C")
         issues = row.get("issues","")
         issues_str = " - ".join(issues[:3]) if isinstance(issues,list) else str(issues)[:45]
         pdf.set_text_color(*GRAY); pdf.cell(65,5,safe(issues_str[:45]),fill=True)
@@ -1318,7 +1318,7 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         by = 110
         pdf.set_fill_color(*col); pdf.rect(bx, by, bw, 1.5, 'F')
         pdf.set_xy(bx, by+5); pdf.set_font("Helvetica","B",9); pdf.set_text_color(*col)
-        pdf.cell(bw,5,title,new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(bw,5,safe(title),new_x="LMARGIN", new_y="NEXT")
         pdf.set_x(bx); pdf.set_font("Helvetica","",7.5); pdf.set_text_color(200,210,240)
         pdf.multi_cell(bw-2, 4.5, desc)
         bx += bw + 4
