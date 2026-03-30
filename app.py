@@ -2453,13 +2453,32 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
     with t_robots:
         st.markdown("#### 🤖 Analyse robots.txt")
         if robots_data:
-            rb1,rb2,rb3,rb4 = st.columns(4)
-            rb1.metric("Statut robots.txt", "✅ Trouvé" if robots_data.get("found") else "❌ Absent")
-            rb2.metric("Règles Disallow", robots_data.get("disallow_count",0))
-            rb3.metric("User-agents", len(robots_data.get("user_agents",[])))
-            rb4.metric("Refs sitemap", len(robots_data.get("sitemap_refs",[])))
+            found_rb = robots_data.get("found", False)
+            rb_color = "#059669" if found_rb else "#ef4444"
+            rb_found_val = "✅ Trouvé" if found_rb else "❌ Absent"
+            st.markdown(f"""
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1rem">
+              <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid {rb_color}">
+                <div style="font-size:1.4rem;font-weight:700;color:#111827">{rb_found_val}</div>
+                <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Statut robots.txt</div>
+              </div>
+              <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #fc6f06">
+                <div style="font-size:1.4rem;font-weight:700;color:#111827">{robots_data.get("disallow_count", 0)}</div>
+                <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Règles Disallow</div>
+              </div>
+              <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #00cec8">
+                <div style="font-size:1.4rem;font-weight:700;color:#111827">{len(robots_data.get("user_agents", []))}</div>
+                <div style="font-size:.78rem;color:#6b7280;margin-top:3px">User-agents</div>
+              </div>
+              <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #0c85be">
+                <div style="font-size:1.4rem;font-weight:700;color:#111827">{len(robots_data.get("sitemap_refs", []))}</div>
+                <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Refs sitemap</div>
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
             if robots_data.get("issues"):
-                for issue in robots_data["issues"]: st.warning(f"⚠️ {issue}")
+                for issue in robots_data["issues"]:
+                    st.markdown(f"""<div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:.7rem 1rem;margin-bottom:.5rem;color:#92400e;font-size:.85rem">⚠️ {issue}</div>""", unsafe_allow_html=True)
             if robots_data.get("disallowed_paths"):
                 st.markdown("**Chemins bloqués :**")
                 st.dataframe(pd.DataFrame(robots_data["disallowed_paths"],columns=["Chemin Disallow"]),
@@ -2471,17 +2490,34 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
                 with st.expander("📄 Contenu brut robots.txt"):
                     st.code(robots_data["raw"], language="text")
         else:
-            st.info("Relancez un audit pour analyser robots.txt")
+            st.markdown("""<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.8rem 1rem;color:#1e40af;font-size:.85rem">ℹ️ Relancez un audit pour analyser robots.txt</div>""", unsafe_allow_html=True)
 
         st.markdown("---")
         st.markdown("#### 🗺 Analyse sitemap.xml")
         if sitemap_data:
-            sm1,sm2,sm3 = st.columns(3)
-            sm1.metric("Statut sitemap", "✅ Trouvé" if sitemap_data.get("found") else "❌ Absent")
-            sm2.metric("URLs indexées", sitemap_data.get("url_count",0))
-            sm3.metric("Type", "Index" if sitemap_data.get("is_index") else "Standard")
+            found_sm = sitemap_data.get("found", False)
+            sm_color = "#059669" if found_sm else "#ef4444"
+            sm_found_val = "✅ Trouvé" if found_sm else "❌ Absent"
+            sm_type = "Index" if sitemap_data.get("is_index") else "Standard"
+            st.markdown(f"""
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem">
+              <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid {sm_color}">
+                <div style="font-size:1.4rem;font-weight:700;color:#111827">{sm_found_val}</div>
+                <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Statut sitemap</div>
+              </div>
+              <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #0c85be">
+                <div style="font-size:1.4rem;font-weight:700;color:#111827">{sitemap_data.get("url_count", 0)}</div>
+                <div style="font-size:.78rem;color:#6b7280;margin-top:3px">URLs indexées</div>
+              </div>
+              <div style="background:white;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);border-top:3px solid #00cec8">
+                <div style="font-size:1.4rem;font-weight:700;color:#111827">{sm_type}</div>
+                <div style="font-size:.78rem;color:#6b7280;margin-top:3px">Type</div>
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
             if sitemap_data.get("issues"):
-                for issue in sitemap_data["issues"]: st.warning(f"⚠️ {issue}")
+                for issue in sitemap_data["issues"]:
+                    st.markdown(f"""<div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:.7rem 1rem;margin-bottom:.5rem;color:#92400e;font-size:.85rem">⚠️ {issue}</div>""", unsafe_allow_html=True)
             if sitemap_data.get("url",""):
                 st.caption(f"URL analysée : {sitemap_data['url']}")
             if sitemap_data.get("sub_sitemaps"):
@@ -2491,7 +2527,7 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
                 st.markdown("**Aperçu des URLs :**")
                 for u in sitemap_data["urls_sample"]: st.code(u)
         else:
-            st.info("Relancez un audit pour analyser le sitemap")
+            st.markdown("""<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.8rem 1rem;color:#1e40af;font-size:.85rem">ℹ️ Relancez un audit pour analyser le sitemap</div>""", unsafe_allow_html=True)
 
     # ── ONGLETS EXPERT UNIQUEMENT ─────────────────────────────
     if expert_mode:
