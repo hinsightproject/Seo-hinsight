@@ -1117,36 +1117,33 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
     pdf.section("02 - Préconisations prioritaires", ORANGE)
 
     prio_colors = {
-        "🔴 Critique":  (RED,    (255,240,240)),
-        "🟠 Important": (ORANGE, (255,247,237)),
-        "🟡 Normal":    (YELLOW, (255,251,235)),
+        "🔴 Critique":  (RED,    (255,240,240), "CRITIQUE"),
+        "🟠 Important": (ORANGE, (255,247,237), "IMPORTANT"),
+        "🟡 Normal":    (YELLOW, (255,251,235), "NORMAL"),
     }
 
     for s in sugs[:12]:
         prio = s.get("p","")
-        border_col, bg_col = prio_colors.get(prio, (BLUE, LIGHT))
+        border_col, bg_col, prio_label = prio_colors.get(prio, (BLUE, LIGHT, "INFO"))
         y0 = pdf.get_y()
+        card_h = 20
         # Fond coloré léger
-        pdf.set_fill_color(*bg_col); pdf.rect(10, y0, 190, 16, 'F')
+        pdf.set_fill_color(*bg_col); pdf.rect(10, y0, 190, card_h, 'F')
         # Trait coloré gauche
-        pdf.set_fill_color(*border_col); pdf.rect(10, y0, 2.5, 16, 'F')
-        # Priorité badge
-        pdf.set_xy(14, y0+1)
+        pdf.set_fill_color(*border_col); pdf.rect(10, y0, 3, card_h, 'F')
+        # Badge priorité (texte propre sans emoji)
+        pdf.set_xy(15, y0+2)
         pdf.set_font("Helvetica","B",7); pdf.set_text_color(*border_col)
-        pdf.cell(30,4,safe(prio))
+        pdf.cell(35,4,prio_label)
         # Titre
-        pdf.set_xy(14, y0+5)
-        pdf.set_font("Helvetica","B",9); pdf.set_text_color(*NAVY)
-        pdf.cell(186,4,safe(s.get("t","")[:80]))
+        pdf.set_xy(15, y0+7)
+        pdf.set_font("Helvetica","B",8.5); pdf.set_text_color(*NAVY)
+        pdf.cell(185,4,safe(s.get("t","")[:90]))
         # Action
-        pdf.set_xy(14, y0+9)
-        pdf.set_font("Helvetica","",8); pdf.set_text_color(*GRAY)
-        pdf.cell(100,4,safe(f"-> {s.get('a','')[:70]}"))
-        # Impact
-        pdf.set_xy(120, y0+9)
-        pdf.set_font("Helvetica","I",7); pdf.set_text_color(*GRAY)
-        pdf.cell(80,4,safe(f"Impact : {s.get('i','')[:50]}"))
-        pdf.set_y(y0+18)
+        pdf.set_xy(15, y0+13)
+        pdf.set_font("Helvetica","",7.5); pdf.set_text_color(*GRAY)
+        pdf.cell(185,4,safe(f"-> {s.get('a','')[:100]}"))
+        pdf.set_y(y0+card_h+2)
 
     pdf.ln(2)
 
@@ -1225,17 +1222,18 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
             for rec in recs[:6]:
                 p = rec.get("p","")
                 bc = RED if "Critique" in p else (ORANGE if "Important" in p else YELLOW)
+                bg = (255,240,240) if "Critique" in p else ((255,247,237) if "Important" in p else (255,251,235))
+                lbl = "CRITIQUE" if "Critique" in p else ("IMPORTANT" if "Important" in p else "NORMAL")
                 y0 = pdf.get_y()
-                pdf.set_fill_color(*(255,247,237) if "Important" in p else ((255,240,240) if "Critique" in p else (255,251,235)))
-                pdf.rect(10,y0,190,13,'F')
-                pdf.set_fill_color(*bc); pdf.rect(10,y0,2.5,13,'F')
-                pdf.set_xy(14,y0+1); pdf.set_font("Helvetica","B",8); pdf.set_text_color(*bc)
-                pdf.cell(50,4,safe(p))
-                pdf.set_xy(14,y0+5); pdf.set_font("Helvetica","B",8); pdf.set_text_color(*NAVY)
-                pdf.cell(186,4,safe(rec.get("t","")[:80]))
-                pdf.set_xy(14,y0+9); pdf.set_font("Helvetica","",7); pdf.set_text_color(*GRAY)
-                pdf.cell(186,4,safe(f"-> {rec.get('a','')[:100]}"))
-                pdf.set_y(y0+15)
+                pdf.set_fill_color(*bg); pdf.rect(10,y0,190,18,'F')
+                pdf.set_fill_color(*bc); pdf.rect(10,y0,3,18,'F')
+                pdf.set_xy(15,y0+2); pdf.set_font("Helvetica","B",7); pdf.set_text_color(*bc)
+                pdf.cell(35,4,lbl)
+                pdf.set_xy(15,y0+7); pdf.set_font("Helvetica","B",8); pdf.set_text_color(*NAVY)
+                pdf.cell(185,4,safe(rec.get("t","")[:80]))
+                pdf.set_xy(15,y0+12); pdf.set_font("Helvetica","",7); pdf.set_text_color(*GRAY)
+                pdf.cell(185,4,safe(f"-> {rec.get('a','')[:100]}"))
+                pdf.set_y(y0+20)
 
     # ════════════════════════════════════════════════════════════
     # PAGE 5 - TOP PAGES À CORRIGER
