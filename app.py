@@ -2849,7 +2849,7 @@ else:
 
     st.markdown("<div style='margin-top:1.2rem'></div>", unsafe_allow_html=True)
     fc1, fc2, fc3, fc4 = st.columns(4)
-    card_style = "background:white;border-radius:10px;padding:1.3rem 1.1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);min-height:140px;display:flex;flex-direction:column;justify-content:flex-start"
+    card_style = "background:white;border-radius:10px;padding:1.3rem 1.1rem;box-shadow:0 1px 5px rgba(9,16,69,.07);height:160px;display:flex;flex-direction:column;justify-content:flex-start"
     with fc1:
         st.markdown(f"""<div style='{card_style};border-top:3px solid #fc6f06'>
         <div style='font-size:1.6rem;margin-bottom:.5rem'>📄</div>
