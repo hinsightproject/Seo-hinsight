@@ -847,16 +847,27 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         if not text: return ""
         text = str(text)
         replacements = {
-            "🔴": "[!]", "🟠": "[~]", "🟡": "[.]", "🟢": "[OK]",
-            "✅": "OK", "❌": "NON", "⚠": "(!)", "🔒": "[SEC]",
-            "→": "->", "—": "-", "–": "-", "«": '"', "»": '"',
-            "\u2014": "-", "\u2013": "-", "\u2018": "'", "\u2019": "'",
-            "\u201c": '"', "\u201d": '"', "\u2026": "...",
-            "œ": "oe", "Œ": "OE", "æ": "ae", "Æ": "AE",
+            "\U0001f534": "[CRITIQUE]", "\U0001f7e0": "[IMPORTANT]", "\U0001f7e1": "[NORMAL]", "\U0001f7e2": "[OK]",
+            "\u2705": "OK", "\u274c": "NON", "\u26a0\ufe0f": "(!)", "\u26a0": "(!)", "\U0001f512": "[SEC]",
+            "\U0001f333": "", "\U0001f4dd": "", "\U0001f50e": "", "\U0001f4c4": "", "\U0001f517": "",
+            "\u23f1": "", "\U0001f501": "", "\u26a1": "", "\u267f": "", "\U0001f5fa": "",
+            "\U0001f916": "", "\U0001f310": "", "\U0001f511": "", "\U0001f4ca": "",
+            "\u2192": "->", "\u2014": "-", "\u2013": "-", "\u00ab": '"', "\u00bb": '"',
+            "\u2018": "'", "\u2019": "'", "\u201c": '"', "\u201d": '"', "\u2026": "...", "\u00b7": ".",
+            "\u0153": "oe", "\u0152": "OE", "\u00e6": "ae", "\u00c6": "AE",
+            "\u2022": "-", "\u25cf": "-",
         }
         for k, v in replacements.items():
             text = text.replace(k, v)
-        return text.encode("latin-1", errors="replace").decode("latin-1")
+        # Nettoyage final : supprime tout caractère non latin-1
+        result = ""
+        for ch in text:
+            try:
+                ch.encode("latin-1")
+                result += ch
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                result += "?"
+        return result
 
     # ── Palette Hinsight
     NAVY   = (9,16,69)
@@ -1122,7 +1133,7 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
         # Priorité badge
         pdf.set_xy(14, y0+1)
         pdf.set_font("Helvetica","B",7); pdf.set_text_color(*border_col)
-        pdf.cell(30,4,prio)
+        pdf.cell(30,4,safe(prio))
         # Titre
         pdf.set_xy(14, y0+5)
         pdf.set_font("Helvetica","B",9); pdf.set_text_color(*NAVY)
