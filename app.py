@@ -31,7 +31,7 @@ button[kind="header"]{display:none !important}
 .block-container{padding-top:1rem;padding-bottom:2rem}
 .app-header{background:linear-gradient(135deg,#091045 0%,#212c6c 100%);padding:1.4rem 2rem;border-radius:14px;margin-bottom:1.8rem;border-bottom:3px solid #fc6f06}
 .app-header h1{color:white;margin:0;font-size:1.5rem;font-weight:700}
-.app-header p{color:#8892b0;margin:5px 0 0;font-size:.82rem}
+.app-header p{color:#c8d0e8;margin:5px 0 0;font-size:.82rem}
 .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:1.2rem}
 .kpi-card{background:white;border-radius:12px;padding:1rem 1.1rem;box-shadow:0 1px 6px rgba(9,16,69,.07);border-top:3px solid #e5e7eb}
 .kpi-card.orange{border-color:#fc6f06}.kpi-card.red{border-color:#ef4444}
@@ -179,7 +179,7 @@ div[data-testid="stAlert"][kind="error"] p{color:#991b1b !important}
 [data-testid="stText"]{color:#111827 !important}
 /* Préserver le texte blanc du header */
 .app-header h1{color:white !important}
-.app-header p{color:#8892b0 !important}
+.app-header p{color:#c8d0e8 !important}
 
 /* ── BLOCS INFO / BLOCKQUOTE ── */
 [data-testid="stCaptionContainer"] p{color:#6b7280 !important}
