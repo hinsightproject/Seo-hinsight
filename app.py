@@ -1654,7 +1654,7 @@ for k,v in [("crawl_done",False),("results",[]),("ps",{}),("ps_desktop",{}),("op
 st.markdown("""<div class="app-header">
   <div>
     <h1>🔍 Audit SEO - Hinsight</h1>
-    <p>Crawler SEO - On-page - Vitesse - Fichiers - Liens sortants - Open Graph - Schema.org - Backlinks</p>
+    <p style="color:#c8d0e8 !important;margin:5px 0 0;font-size:.82rem">Crawler SEO - On-page - Vitesse - Fichiers - Liens sortants - Open Graph - Schema.org - Backlinks</p>
   </div>
 </div>""",unsafe_allow_html=True)
 
