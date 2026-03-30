@@ -1002,11 +1002,11 @@ def generate_pdf(df, domain, score, ps_data, dups, sugs, opr_data=None, security
     col_w = 36
     for val, lbl in kpis:
         pdf.set_font("Helvetica","B",14); pdf.set_text_color(*WHITE)
-                pdf.cell(col_w,7,safe(val),align="C")
+        pdf.cell(col_w,7,safe(val),align="C")
         pdf.set_x(pdf.get_x()-col_w)
         pdf.set_y(pdf.get_y()+7)
         pdf.set_font("Helvetica","",7); pdf.set_text_color(140,160,220)
-                pdf.cell(col_w,4,safe(lbl),align="C")
+        pdf.cell(col_w,4,safe(lbl),align="C")
         pdf.set_y(pdf.get_y()-7)
         pdf.set_x(pdf.get_x()+col_w)
 
