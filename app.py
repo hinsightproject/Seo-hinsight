@@ -173,13 +173,13 @@ div[data-testid="stAlert"][kind="error"] p{color:#991b1b !important}
 
 /* ── FORCER LISIBILITÉ TITRES ET TEXTES ── */
 .stMarkdown h1,.stMarkdown h2,.stMarkdown h3,.stMarkdown h4,.stMarkdown h5,.stMarkdown h6{color:#091045 !important}
-.stMarkdown p{color:#111827 !important}
+.block-container .stMarkdown p{color:#111827 !important}
 .stMarkdown li{color:#111827 !important}
 .stCaption p{color:#6b7280 !important}
 [data-testid="stText"]{color:#111827 !important}
-h1,h2,h3,h4,h5,h6{color:#091045 !important}
-p{color:#111827 !important}
-label{color:#374151 !important}
+/* Préserver le texte blanc du header */
+.app-header h1{color:white !important}
+.app-header p{color:#8892b0 !important}
 
 /* ── BLOCS INFO / BLOCKQUOTE ── */
 [data-testid="stCaptionContainer"] p{color:#6b7280 !important}
@@ -2594,7 +2594,7 @@ if st.session_state["crawl_done"] and st.session_state["results"]:
             st.markdown("#### ♿ Accessibilité - Lighthouse + analyse locale")
             if not ps_result:
                 st.warning("⚠️ Clé API PageSpeed requise pour le score Lighthouse accessibilité.")
-                st.markdown("""<div style='background:#f0f9ff;border-radius:8px;padding:1rem;border-left:4px solid #0c85be'>
+                st.markdown("""<div style='background:#dbeafe;border-radius:8px;padding:1rem;border-left:4px solid #0c85be;color:#1e3a5f;font-weight:500'>
                 Ajoutez votre clé API PageSpeed dans la sidebar (gratuit, 25 000 req/jour)
                 </div>""", unsafe_allow_html=True)
             else:
